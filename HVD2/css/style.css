@@ -1,191 +1,73 @@
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const music = document.getElementById("bgMusic");
 
-/* BACKGROUND */
-body {
-    height: 100vh;
-    background: linear-gradient(135deg, #0f4c81, #4da8da, #89c2d9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+/* MOVE NO BUTTON */
+function moveButton() {
+    noBtn.style.position = "absolute";
+    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
 }
-
-/* MAIN CONTAINER */
-.container {
-    background: rgba(255,255,255,0.95);
-    padding: 32px;
-    border-radius: 24px;
-    width: 90%;
-    max-width: 380px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    z-index: 10;
-}
-
-h1 {
-    color: #1e90ff;
-    margin-bottom: 12px;
-}
-
-.subtitle {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 18px;
-}
-
-/* INPUT */
-.love-input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 18px;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 15px;
-}
-
-/* BUTTONS */
-.buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-
-button {
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    border-radius: 30px;
-    padding: 12px 26px;
-    transition: 0.3s ease;
-}
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
 
 /* YES BUTTON */
-.btn-yes {
-    background: linear-gradient(135deg, #1e90ff, #63b3ff);
-    color: white;
-    box-shadow: 0 8px 18px rgba(30,144,255,0.4);
+yesBtn.addEventListener("click", (e) => {
+    document.getElementById("result").style.display = "block";
+    music.play();
+    confettiBurst(e.clientX, e.clientY);
+
+    setTimeout(() => {
+        document.getElementById("page2").style.display = "flex";
+    }, 1200);
+});
+
+/* PAGE NAV */
+function goPage(num) {
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    document.getElementById("page" + num).style.display = "flex";
 }
 
-.btn-yes:hover {
-    transform: translateY(-2px) scale(1.05);
-}
+/* CONFETTI */
+function confettiBurst(x, y) {
+    for (let i = 0; i < 30; i++) {
+        const c = document.createElement("div");
+        c.style.position = "fixed";
+        c.style.width = "6px";
+        c.style.height = "6px";
+        c.style.borderRadius = "50%";
+        c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        c.style.left = x + "px";
+        c.style.top = y + "px";
+        c.style.zIndex = 999;
 
-/* NO BUTTON */
-.btn-no {
-    background: #eef3fa;
-    color: #555;
-}
+        document.body.appendChild(c);
 
-/* RESULT */
-#result {
-    margin-top: 18px;
-    font-size: 20px;
-    color: #1e90ff;
-    display: none;
-}
+        c.animate([
+            { transform: "translate(0,0)", opacity: 1 },
+            { transform: `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px)`, opacity: 0 }
+        ], { duration: 1000 });
 
-/* PAGES */
-.page {
-    position: fixed;
-    inset: 0;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0f4c81, #4da8da, #89c2d9);
-    z-index: 15;
-}
-
-.page-box {
-    background: rgba(255,255,255,0.95);
-    padding: 30px;
-    border-radius: 24px;
-    width: 90%;
-    max-width: 380px;
-    text-align: center;
-}
-
-/* NAV BUTTONS */
-.nav-btn {
-    background: linear-gradient(135deg, #1e90ff, #63b3ff);
-    color: white;
-    padding: 10px 22px;
-    border-radius: 25px;
-    margin: 8px;
-}
-
-.nav-btn.outline {
-    background: transparent;
-    border: 2px solid #1e90ff;
-    color: #1e90ff;
-}
-
-/* GALLERY */
-.gallery img {
-    width: 65px;
-    height: 65px;
-    border-radius: 14px;
-    object-fit: cover;
-    margin: 6px;
-}
-
-/* FLOATING BUBBLES (SMALLER & SOFTER) */
-.fall-img {
-    position: fixed;
-    top: -60px;
-    border-radius: 50%;
-    opacity: 0.7;
-    filter: blur(0.5px);
-    box-shadow: 0 0 10px rgba(255,255,255,0.6);
-    pointer-events: none;
-    z-index: 5;
-}
-
-@keyframes bubbleFall {
-    from { transform: translateY(-10vh) scale(0.8); }
-    to { transform: translateY(110vh) scale(1); opacity: 0; }
-}
-
-/* MOBILE */
-@media (max-width: 480px) {
-    h1 { font-size: 22px; }
-    .container { padding: 26px; }
-
-}
-/* ================= FLOATING BUBBLE IMAGES ================= */
-
-.bubble {
-    position: fixed;
-    top: -50px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    object-fit: cover;
-
-    opacity: 0.75;
-    filter: blur(0.3px);
-    box-shadow: 0 0 8px rgba(255,255,255,0.6);
-
-    pointer-events: none;
-    z-index: 3;
-    animation-name: bubbleFall;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-}
-
-@keyframes bubbleFall {
-    from {
-        transform: translateY(-10vh) scale(0.85);
-        opacity: 0.8;
-    }
-    to {
-        transform: translateY(110vh) scale(1);
-        opacity: 0;
+        setTimeout(() => c.remove(), 1000);
     }
 }
+
+/* FLOATING BUBBLES */
+function startFalling() {
+    setInterval(() => {
+        const img = document.createElement("img");
+        img.src = "images/me.jpg";
+        img.className = "fall-img";
+
+        const size = Math.random() * 15 + 35; // smaller
+        img.style.width = size + "px";
+        img.style.height = size + "px";
+        img.style.left = Math.random() * 100 + "vw";
+        img.style.animation = `bubbleFall ${Math.random()*3+5}s linear forwards`;
+
+        document.body.appendChild(img);
+        setTimeout(() => img.remove(), 8000);
+    }, 500);
+}
+
+startFalling();
