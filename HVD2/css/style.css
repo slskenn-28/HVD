@@ -156,4 +156,36 @@ button {
 @media (max-width: 480px) {
     h1 { font-size: 22px; }
     .container { padding: 26px; }
+
+}
+/* ================= FLOATING BUBBLE IMAGES ================= */
+
+.bubble {
+    position: fixed;
+    top: -50px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    opacity: 0.75;
+    filter: blur(0.3px);
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
+
+    pointer-events: none;
+    z-index: 3;
+    animation-name: bubbleFall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes bubbleFall {
+    from {
+        transform: translateY(-10vh) scale(0.85);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateY(110vh) scale(1);
+        opacity: 0;
+    }
 }
